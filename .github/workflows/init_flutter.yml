@@ -12,18 +12,19 @@ jobs:
       - name: 📥 سحب الريبو
         uses: actions/checkout@v4
 
-      - name: ⚙️ إعداد بيئة Flutter
+      - name: ⚙️ إعداد بيئة Flutter (أحدث إصدار مستقر)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.0' 
+          channel: 'stable' # ده بيجيب أحدث إصدار فلاتر متوفر حالياً
 
       - name: 🏗️ إنشاء ملفات المشروع ورفعها للريبو
         run: |
-          flutter create .
+          # إجبار فلاتر على استخدام حروف صغيرة لاسم الحزمة
+          flutter create --project-name repo_app .
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           git add .
-          git commit -m "🎉 تهيئة مشروع فلاتر الجديد" || echo "لا يوجد جديد للحفظ"
+          git commit -m "🎉 تهيئة مشروع فلاتر الجديد بأحدث إصدار" || echo "لا يوجد جديد للحفظ"
           git push
 
       - name: 📦 بناء تطبيق الأندرويد (APK)
