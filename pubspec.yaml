@@ -1,5 +1,5 @@
 name: repo_app
-description: "A modern Telegram Clone built with Flutter in 2026."
+description: "A modern, full-featured Telegram Clone built with Flutter."
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -11,9 +11,13 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  flutter_chat_ui: ^1.6.8
-  flutter_chat_types: ^3.6.2
+  # مكتبة لإنشاء معرفات فريدة للرسائل والمستخدمين
   uuid: ^4.3.3
+  # مكتبة للتعامل مع الوسائط (صور وفيديوهات)
+  image_picker: ^1.0.7
+  video_player: ^2.8.2
+  # مكتبة للتشغيل الصوتي (وهمية في هذه المرحلة)
+  # audioplayers: ^6.0.0
 
 dev_dependencies:
   flutter_test:
