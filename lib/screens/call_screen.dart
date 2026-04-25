@@ -17,10 +17,10 @@ class _CallScreenState extends State<CallScreen> {
   bool _isSpeakerOn = true;
 
   // === الميزات المتقدمة (2026) ===
-  bool _noiseCancellationEnabled = false; // تقليل التشويش (AI Denoise)
-  bool _spatialAudioEnabled = false; // الصوت المحيطي (Dolby Atmos/Spatial)
-  bool _glassModeEnabled = false; // وضع النظارات الذكية (AR/Smart Glasses)
-  String _audioRouting = "Stereo"; // مسار الصوت (Mono, Stereo, Surround)
+  bool _noiseCancellationEnabled = false; 
+  bool _spatialAudioEnabled = false; 
+  bool _glassModeEnabled = false; 
+  String _audioRouting = "Stereo"; 
 
   // === إدارة وقت المكالمة ===
   Timer? _timer;
@@ -34,13 +34,11 @@ class _CallScreenState extends State<CallScreen> {
   void initState() {
     super.initState();
     _startTimer();
-    // هنا مستقبلاً بيتم تهيئة مكتبة WebRTC أو Agora
   }
 
   @override
   void dispose() {
     _timer?.cancel();
-    // هنا بيتم إغلاق الكاميرا والمايك
     super.dispose();
   }
 
@@ -66,23 +64,14 @@ class _CallScreenState extends State<CallScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // 1. الخلفية: فيديو الشخص الآخر (أو صورة ضبابية لو الكاميرا مقفولة)
           _buildRemoteVideo(),
-
-          // 2. شريط الحالة العلوي (التشفير، الوقت، وضع النظارة)
           _buildTopBar(),
-
-          // 3. الكاميرا المحلية العائمة (PIP) قابلة للسحب
           if (_isVideoOn) _buildDraggableLocalVideo(screenSize),
-
-          // 4. لوحة التحكم السفلية (زجاجية عصرية)
           _buildBottomControlPanel(),
         ],
       ),
     );
   }
-
-  // === بناء المكونات (Widgets) ===
 
   Widget _buildRemoteVideo() {
     return Container(
@@ -98,15 +87,12 @@ class _CallScreenState extends State<CallScreen> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // لو في فيديو حقيقي هيتحط هنا (RTCVideoView)
-          // حالياً هنعرض صورة وهمية ضبابية
           Image.network(
             'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
           ),
-          // تأثير تعتيم خفيف على الصورة
           Container(color: Colors.black.withOpacity(0.3)),
         ],
       ),
@@ -121,12 +107,10 @@ class _CallScreenState extends State<CallScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // زر الرجوع / تصغير المكالمة
           IconButton(
             icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 32),
             onPressed: () => Navigator.pop(context),
           ),
-          // معلومات المكالمة (تشفير + وقت)
           Column(
             children: [
               Row(
@@ -143,7 +127,6 @@ class _CallScreenState extends State<CallScreen> {
               ),
             ],
           ),
-          // مؤشر وضع النظارة الذكية (Glass Mode)
           GestureDetector(
             onTap: () {
               setState(() => _glassModeEnabled = !_glassModeEnabled);
@@ -156,7 +139,8 @@ class _CallScreenState extends State<CallScreen> {
                 color: _glassModeEnabled ? Colors.blueAccent.withOpacity(0.4) : Colors.black45,
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.glasses, color: _glassModeEnabled ? Colors.blueAccent : Colors.white, size: 24),
+              // ✅ التعديل هنا: استخدمنا أيقونة view_in_ar للواقع المعزز والنظارات
+              child: Icon(Icons.view_in_ar, color: _glassModeEnabled ? Colors.blueAccent : Colors.white, size: 24),
             ),
           ),
         ],
@@ -173,7 +157,6 @@ class _CallScreenState extends State<CallScreen> {
           setState(() {
             _pipX += details.delta.dx;
             _pipY += details.delta.dy;
-            // حماية الكاميرا من الخروج بره الشاشة
             _pipX = _pipX.clamp(0.0, screenSize.width - 120.0);
             _pipY = _pipY.clamp(40.0, screenSize.height - 300.0);
           });
@@ -188,7 +171,6 @@ class _CallScreenState extends State<CallScreen> {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            // هنا بيتحط فيديو الكاميرا الأمامية بتاعك
             child: Container(
               color: Colors.blueGrey[900],
               child: const Center(child: Icon(Icons.person, color: Colors.white54, size: 50)),
@@ -205,7 +187,7 @@ class _CallScreenState extends State<CallScreen> {
       child: ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15), // تأثير الزجاج (Frosted Glass)
+          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.only(top: 20, bottom: 40, left: 20, right: 20),
@@ -216,12 +198,8 @@ class _CallScreenState extends State<CallScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // 1. شريط الميزات المتقدمة (Advanced Audio Features)
                 _buildAdvancedAudioControls(),
-                
                 const SizedBox(height: 25),
-                
-                // 2. أزرار التحكم الأساسية (مايك، كاميرا، سماعة، إنهاء)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -240,7 +218,6 @@ class _CallScreenState extends State<CallScreen> {
                       isActive: _isSpeakerOn,
                       onTap: () => setState(() => _isSpeakerOn = !_isSpeakerOn),
                     ),
-                    // زر إنهاء المكالمة
                     GestureDetector(
                       onTap: () => Navigator.pop(context),
                       child: Container(
@@ -263,15 +240,12 @@ class _CallScreenState extends State<CallScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // زر تقليل التشويش المعتمد على الذكاء الاصطناعي
         _buildAdvancedToggle(
           title: "AI Denoise",
           icon: Icons.noise_control_off,
           isActive: _noiseCancellationEnabled,
           onTap: () => setState(() => _noiseCancellationEnabled = !_noiseCancellationEnabled),
         ),
-        
-        // تبديل مسار الصوت (ستيريو)
         GestureDetector(
           onTap: () {
             setState(() {
@@ -292,8 +266,6 @@ class _CallScreenState extends State<CallScreen> {
             ),
           ),
         ),
-
-        // زر الصوت المحيطي (Dolby Atmos)
         _buildAdvancedToggle(
           title: "Spatial",
           icon: Icons.surround_sound,
