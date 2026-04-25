@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart'; // مكتبة الأيقونات اللي أضفناها
 
 void main() {
   runApp(const TelegramCloneApp());
@@ -13,16 +12,15 @@ class TelegramCloneApp extends StatelessWidget {
     return MaterialApp(
       title: 'Telegram 2026',
       debugShowCheckedModeBanner: false,
-      // 1. تفعيل الوضع الغامق (Dark Mode) زي الصور
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color(0xFF17212B), // لون خلفية تيليجرام الأصلي
+        scaffoldBackgroundColor: const Color(0xFF17212B),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF233040), // لون شريط تيليجرام العلوي
+          backgroundColor: Color(0xFF233040),
           elevation: 0,
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Color(0xFF233040),
-          selectedItemColor: Color(0xFF64B5F6), // لون أزرق تيليجرام عند الاختيار
+          selectedItemColor: Color(0xFF64B5F6),
           unselectedItemColor: Colors.grey,
         ),
       ),
@@ -39,11 +37,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0; // للتحكم في التبويب الحالي
+  int _selectedIndex = 0;
 
-  // 2. محتويات التبويبات السفليّة (عينة تجريبية)
   final List<Widget> _screens = [
-    const ChatListScreen(), // شاشة المحادثات الرئيسية
+    const ChatListScreen(),
     const Center(child: Text("Contacts Screen", style: TextStyle(fontSize: 24))),
     const Center(child: Text("Settings Screen", style: TextStyle(fontSize: 24))),
     const Center(child: Text("Personal Screen", style: TextStyle(fontSize: 24))),
@@ -52,7 +49,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 3. تركيب الشريط السفلي (Bottom Navigation) زي الصورة 2
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
@@ -60,26 +56,24 @@ class _MainScreenState extends State<MainScreen> {
             _selectedIndex = index;
           });
         },
-        type: BottomNavigationBarType.fixed, // عشان يظهر النص والأيقونة
+        type: BottomNavigationBarType.fixed,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Ionicons.chatbubble_ellipses), label: 'Chats'),
-          BottomNavigationBarItem(icon: Icon(Ionicons.people), label: 'Contacts'),
-          BottomNavigationBarItem(icon: Icon(Ionicons.settings), label: 'Settings'),
-          BottomNavigationBarItem(icon: Icon(Ionicons.person_circle), label: 'Personal'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: 'Chats'),
+          BottomNavigationBarItem(icon: Icon(Icons.people_outline), label: 'Contacts'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings_outlined), label: 'Settings'),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: 'Personal'),
         ],
       ),
       body: _screens[_selectedIndex],
-        );
+    );
   }
 }
 
-// شاشة قائمة الدردشات (تصميم يحاكي الصورة 2)
 class ChatListScreen extends StatelessWidget {
   const ChatListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // بيانات وهمية للعرض فقط
     final List<Map<String, String>> dummyChats = [
       {"name": "Telegram", "msg": "Hello! Welcome to...", "time": "2:04 PM", "unread": "155"},
       {"name": "Ehab TV", "msg": "هذا قبل التحديث", "time": "2:01 PM", "unread": "4"},
@@ -98,7 +92,6 @@ class ChatListScreen extends StatelessWidget {
           SizedBox(width: 10),
         ],
       ),
-      // 4. بناء القائمة الرئيسية (ListView) زي الصورة 2
       body: ListView.separated(
         itemCount: dummyChats.length,
         separatorBuilder: (context, index) => const Divider(color: Color(0xFF2B394A), height: 1),
@@ -132,17 +125,15 @@ class ChatListScreen extends StatelessWidget {
               ],
             ),
             onTap: () {
-              // هنا هنفتح شاشة الشات اللي جوه بعدين
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Opening chat with ${chat['name']}...")));
             },
           );
         },
       ),
-      // 5. زر الإرسال الطائر الأزرق زي الصورة 2
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: const Color(0xFF4FA9F3),
-        child: const Icon(Icons.add_comment, color: Colors.white),
+        child: const Icon(Icons.edit, color: Colors.white),
       ),
     );
   }
