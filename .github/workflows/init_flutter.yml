@@ -1,21 +1,21 @@
 name: Init and Build Flutter
 on:
-  workflow_dispatch: # ده هيعملك زرار عشان تشغل البناء بمزاجك
+  workflow_dispatch: 
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # إعطاء صلاحية للروبوت يكتب الكود في الريبو
+      contents: write 
 
     steps:
       - name: 📥 سحب الريبو
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: ⚙️ إعداد بيئة Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.0' # أحدث إصدار مستقر
+          flutter-version: '3.19.0' 
 
       - name: 🏗️ إنشاء ملفات المشروع ورفعها للريبو
         run: |
@@ -30,7 +30,7 @@ jobs:
         run: flutter build apk --release
 
       - name: 📤 رفع ملف الـ APK للتحميل
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Repo_APP_V1
           path: build/app/outputs/flutter-apk/app-release.apk
