@@ -11,13 +11,11 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  # مكتبة لإنشاء معرفات فريدة للرسائل والمستخدمين
   uuid: ^4.3.3
-  # مكتبة للتعامل مع الوسائط (صور وفيديوهات)
   image_picker: ^1.0.7
   video_player: ^2.8.2
-  # مكتبة للتشغيل الصوتي (وهمية في هذه المرحلة)
-  # audioplayers: ^6.0.0
+  # أضفنا مكتبة الوقت هنا 👇
+  intl: ^0.19.0 
 
 dev_dependencies:
   flutter_test:
