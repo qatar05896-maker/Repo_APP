@@ -5,9 +5,6 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 
-// ==========================================
-// 1. MAIN APP ENTRY (التشغيل والسمة الجلاسية)
-// ==========================================
 void main() {
   runApp(const Telegram2026UltimateApp());
 }
@@ -21,7 +18,7 @@ class Telegram2026UltimateApp extends StatelessWidget {
       title: 'Telegram 2026 (Glassy Ultimate)',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color(0xFF0F1722), // خلفية داكنة جداً لدعم الزجاج
+        scaffoldBackgroundColor: const Color(0xFF0F1722), 
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -32,9 +29,6 @@ class Telegram2026UltimateApp extends StatelessWidget {
   }
 }
 
-// ==========================================
-// 2. MAIN NAVIGATION (الهيكل الأساسي والزجاج السفلي)
-// ==========================================
 class MainGlassyNavigation extends StatefulWidget {
   const MainGlassyNavigation({super.key});
 
@@ -47,7 +41,7 @@ class _MainGlassyNavigationState extends State<MainGlassyNavigation> {
   
   final List<Widget> _screens = [
     const ChatListScreen(),
-    const BotsAndMiniAppsScreen(), // شاشة البوتات والتطبيقات المصغرة (2026)
+    const BotsAndMiniAppsScreen(),
     const ContactsScreen(),
     const SettingsGlassyScreen(),
   ];
@@ -57,7 +51,6 @@ class _MainGlassyNavigationState extends State<MainGlassyNavigation> {
     return Scaffold(
       body: Stack(
         children: [
-          // خلفية حية (Gradient Animation) لإبراز تأثير الزجاج
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -67,10 +60,8 @@ class _MainGlassyNavigationState extends State<MainGlassyNavigation> {
               ),
             ),
           ),
-          // الشاشة الحالية
           IndexedStack(index: _currentIndex, children: _screens),
           
-          // الشريط السفلي الزجاجي (Glassmorphism)
           Align(
             alignment: Alignment.bottomCenter,
             child: ClipRRect(
@@ -125,9 +116,6 @@ class _MainGlassyNavigationState extends State<MainGlassyNavigation> {
   }
 }
 
-// ==========================================
-// 3. CHAT LIST SCREEN (قائمة الدردشات + القصص)
-// ==========================================
 class ChatListScreen extends StatelessWidget {
   const ChatListScreen({super.key});
 
@@ -142,7 +130,6 @@ class ChatListScreen extends StatelessWidget {
     return SafeArea(
       child: Column(
         children: [
-          // شريط القصص (Stories 2026)
           SizedBox(
             height: 100,
             child: ListView.builder(
@@ -157,7 +144,7 @@ class ChatListScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(3),
                         decoration: const BoxDecoration(shape: BoxShape.circle, gradient: LinearGradient(colors: [Colors.blue, Colors.purple])),
-                        child: CircleAvatar(radius: 26, backgroundColor: Colors.grey[900], child: Text("U$index")),
+                        child: CircleAvatar(radius: 26, backgroundColor: Colors.black45, child: Text("U$index")),
                       ),
                       const SizedBox(height: 5),
                       Text("User $index", style: const TextStyle(color: Colors.white, fontSize: 10)),
@@ -167,7 +154,6 @@ class ChatListScreen extends StatelessWidget {
               },
             ),
           ),
-          // قائمة الدردشات
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.only(bottom: 90),
@@ -200,9 +186,6 @@ class ChatListScreen extends StatelessWidget {
   }
 }
 
-// ==========================================
-// 4. ACTIVE CHAT SCREEN (الشات الحقيقي المتصل بالسيرفر)
-// ==========================================
 class ActiveChatScreen extends StatefulWidget {
   final User user;
   const ActiveChatScreen({super.key, required this.user});
@@ -214,18 +197,21 @@ class ActiveChatScreen extends StatefulWidget {
 class _ActiveChatScreenState extends State<ActiveChatScreen> {
   late WebSocketChannel channel;
   List<Message> messages = [];
+  
+  // ✅ التعديل هنا: شيلنا const من Uuid().v4()
   final String myDeviceId = const Uuid().v4();
+
   final TextEditingController _msgController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    // الاتصال بالسيرفر بتاعك
     channel = WebSocketChannel.connect(Uri.parse('wss://services-lau3jg.fly.dev/ws/chat'));
     channel.stream.listen((data) {
       String msgText = data.toString();
       if (msgText.startsWith(myDeviceId)) return;
       setState(() {
+        // ✅ التعديل هنا
         messages.add(Message(id: const Uuid().v4(), text: msgText.replaceFirst(myDeviceId, ''), isMe: false, time: DateTime.now()));
       });
     });
@@ -243,6 +229,7 @@ class _ActiveChatScreenState extends State<ActiveChatScreen> {
     String text = _msgController.text;
     channel.sink.add('$myDeviceId$text');
     setState(() {
+      // ✅ التعديل هنا
       messages.add(Message(id: const Uuid().v4(), text: text, isMe: true, time: DateTime.now()));
     });
     _msgController.clear();
@@ -283,7 +270,7 @@ class _ActiveChatScreenState extends State<ActiveChatScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg'), // خلفية شات تيليجرام
+            image: NetworkImage('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg'), 
             fit: BoxFit.cover,
             opacity: 0.2,
           ),
@@ -325,7 +312,6 @@ class _ActiveChatScreenState extends State<ActiveChatScreen> {
                 },
               ),
             ),
-            // Glassy Input Bar
             ClipRRect(
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
@@ -366,9 +352,6 @@ class _ActiveChatScreenState extends State<ActiveChatScreen> {
   }
 }
 
-// ==========================================
-// 5. CALL SCREEN (المكالمات الفضائية بالزجاج - نسخة الاحتراف)
-// ==========================================
 class CallGlassyScreen extends StatelessWidget {
   const CallGlassyScreen({super.key});
 
@@ -378,12 +361,8 @@ class CallGlassyScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // خلفية المكالمة (صورة افتراضية)
           Image.network('https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800', fit: BoxFit.cover, height: double.infinity, width: double.infinity),
-          // زر الرجوع
           Positioned(top: 50, left: 20, child: IconButton(icon: const Icon(Icons.keyboard_arrow_down, size: 35, color: Colors.white), onPressed: () => Navigator.pop(context))),
-          
-          // أيقونات الـ 2026
           const Positioned(
             top: 60, right: 20,
             child: Row(
@@ -393,8 +372,6 @@ class CallGlassyScreen extends StatelessWidget {
               ],
             ),
           ),
-
-          // لوحة التحكم السفلية الجلاسية
           Align(
             alignment: Alignment.bottomCenter,
             child: ClipRRect(
@@ -431,9 +408,6 @@ class CallGlassyScreen extends StatelessWidget {
   }
 }
 
-// ==========================================
-// 6. BOTS & MINI APPS SCREEN (ويب 3 و تطبيقات مصغرة 2026)
-// ==========================================
 class BotsAndMiniAppsScreen extends StatelessWidget {
   const BotsAndMiniAppsScreen({super.key});
 
@@ -487,9 +461,6 @@ class BotsAndMiniAppsScreen extends StatelessWidget {
   }
 }
 
-// ==========================================
-// 7. SETTINGS SCREEN (الإعدادات الجلاسية)
-// ==========================================
 class SettingsGlassyScreen extends StatelessWidget {
   const SettingsGlassyScreen({super.key});
 
@@ -529,9 +500,6 @@ class SettingsGlassyScreen extends StatelessWidget {
   }
 }
 
-// ==========================================
-// 8. CONTACTS SCREEN (قائمة جهات الاتصال)
-// ==========================================
 class ContactsScreen extends StatelessWidget {
   const ContactsScreen({super.key});
 
@@ -541,9 +509,6 @@ class ContactsScreen extends StatelessWidget {
   }
 }
 
-// ==========================================
-// 9. DATA MODELS (نماذج البيانات)
-// ==========================================
 class User {
   final String id;
   final String name;
